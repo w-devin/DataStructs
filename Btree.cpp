@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <stack>
+#include <queue>
 using namespace std;
 
 template <typename T>
@@ -150,8 +151,28 @@ void SPostOrder(BNode<int> *p)
 {
     if(!p) return ;
 
-    
-    
+    BNode<int> *q = p;
+    stack<BNode<int> *> S;
+    S.push(q);
+
+    while(!S.empty())
+    {
+        if(S.top()->lc != q && S.top()->rc != q)
+        //S.top() not q'father,and S.top() must be q'rBrother
+        {
+            while(BNode<int> *x = S.top()) //equal to if S.top() != NULL
+                if(x->lc){
+                    if(x->rc)
+                        S.push(x->rc);
+                    S.push(x->lc);
+                } else
+                    S.push(x->rc);
+            S.pop(); //pop the NULL pushed in front
+        }
+
+        q = S.top(), S.pop();
+        visit(q);
+    }
 }
 
 void init(BNode<int> *root)
