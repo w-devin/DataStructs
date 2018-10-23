@@ -175,6 +175,24 @@ void SPostOrder(BNode<int> *p)
     }
 }
 
+void LevelOrder(BNode<int> *p)
+{
+    if (!p) return ;
+
+    BNode<int> *q = p;
+    queue<BNode<int> *> Q;
+    Q.push(q);
+
+    while(!Q.empty())
+    {
+        q = Q.front(), Q.pop();
+
+        visit(q);
+        if(q->lc) Q.push(q->lc);
+        if(q->rc) Q.push(q->rc);
+    }
+}
+
 void init(BNode<int> *root)
 {
     root->lc = new BNode<int>(2);
@@ -211,6 +229,10 @@ int main()
     PostOrder(root);
     cout << endl;
     SPostOrder(root);
+    cout << endl;
+
+    cout << "levelOrder" << endl;
+    LevelOrder(root);
     cout << endl;
 
     system("pause");
